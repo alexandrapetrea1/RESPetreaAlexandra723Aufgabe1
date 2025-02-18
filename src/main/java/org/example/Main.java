@@ -61,5 +61,21 @@ public class Main {
             }
         }
 
+        List<Map<String, String>> Joninevent = new ArrayList<>();
+        for (Map<String, String> row : data) {
+            if ("Jonin".equals(row.get("Stufe"))) {
+                Joninevent.add(row);
+            }
+        }
+
+        Joninevent.sort(Comparator.comparing(row -> row.get("Datum")));
+        System.out.println("Evenimentele Jonin sortate cronologic:");
+        for (Map<String, String> event : Joninevent) {
+            String date = event.get("Datum");
+            String name = event.get("Charaktername");
+            String description = event.get("Beschreibung");
+            System.out.println(date + " : " + name + " - " + description);
+        }
+
     }
 }
