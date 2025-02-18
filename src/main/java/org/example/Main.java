@@ -68,13 +68,37 @@ public class Main {
             }
         }
 
-        Joninevent.sort(Comparator.comparing(row -> row.get("Datum")));
+
+        Joninevent.sort(Comparator.comparing(row -> row.get("Datum"), Comparator.reverseOrder()));
+
+
         System.out.println("Evenimentele Jonin sortate cronologic:");
         for (Map<String, String> event : Joninevent) {
             String date = event.get("Datum");
             String name = event.get("Charaktername");
             String description = event.get("Beschreibung");
             System.out.println(date + " : " + name + " - " + description);
+        }
+
+        Map<String, Integer> ninjaEvents = new HashMap<>();
+        for (Map<String, String> row : data) {
+            String ninja = row.get("Charaktername");
+            ninjaEvents.put(ninja, ninjaEvents.getOrDefault(ninja, 0) + 1);
+
+        }
+
+        List<Map.Entry<String, Integer>> sortedNinja = new ArrayList<>(ninjaEvents.entrySet());
+        sortedNinja.sort((a, b) -> {
+            int compare = b.getValue().compareTo(a.getValue());
+            return compare != 0 ? compare : a.getKey().compareTo(b.getKey());
+        });
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/resources/gesammtzahl.txt"))) {
+            for (Map.Entry<String, Integer> entry : sortedNinja) {
+                bw.write(entry.getKey() + "%" + entry.getValue()  );
+                bw.newLine();
+            }
+        }catch(IOException e) {
+            System.out.println("Eroare la scrierea fisierului" + e.getMessage());
         }
 
     }
