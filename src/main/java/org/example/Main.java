@@ -33,5 +33,33 @@ public class Main {
             System.out.println(row);
         }
 
+        Scanner sc = new Scanner(System.in);
+        System.out.print("\nIntroduceți o capacitate minimă: ");
+        double capacity = sc.nextDouble();
+        sc.nextLine();
+
+        List<Map<String, String>> evenimente = new ArrayList<>();
+        for (Map<String, String> row : data) {
+            if (row.containsKey("Kraftpunkte")) {
+                try {
+                    double eventCapacity = Double.parseDouble(row.get("Kraftpunkte"));
+                    if (eventCapacity > capacity) {
+                        evenimente.add(row);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Eroare la conversia capacității pentru: " + row);
+                }
+            }
+        }
+
+        if (evenimente.isEmpty()) {
+            System.out.println("Nu există evenimente cu această capacitate minimă.");
+        } else {
+            System.out.println("\nEvenimente cu capacitate de cel puțin " + capacity + ":");
+            for (Map<String, String> row : evenimente) {
+                System.out.println(row.get("Charaktername"));
+            }
+        }
+
     }
 }
